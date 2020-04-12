@@ -1,6 +1,12 @@
 import Composer from 'telegraf/composer.js';
 import { takeImageFromUrl } from './image-receiver.js';
 
+// export const startCommandHandler = new Composer();
+// startCommandHandler.command('hello', (ctx) => {
+// 	ctx.reply(greeterText);
+// 	return ctx.wizard.next();
+// });
+
 export const createCaseHandler = new Composer();
 createCaseHandler.command('create', (ctx) => {
 	ctx.reply(
@@ -25,6 +31,7 @@ photoHandler.on('photo', async (ctx) => {
 	const biggestPhoto = photosList[lastPhoto];
 
 	const url = await ctx.telegram.getFileLink(biggestPhoto);
+	console.log(url);
 	const image = await takeImageFromUrl(url);
 
 	ctx.reply('Майже готово! Тепер передай мені свою локацію.');
@@ -34,7 +41,8 @@ photoHandler.use((ctx) => ctx.reply('Будь-ласка, пришли мені 
 
 export const locationHandler = new Composer();
 locationHandler.on('location', (ctx) => {
+	console.log(ctx.update.message.location);
 	ctx.reply('Готово! Дякуємо за вашу небайдужість!');
-	return ctx.wizard.leave();
+	return ctx.scene.leave();
 });
 locationHandler.use((ctx) => ctx.reply('Будь-ласка, пришли мені свою локацію.'));

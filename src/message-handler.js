@@ -9,14 +9,14 @@ import { createCaseHandler, textHandler, photoHandler, locationHandler } from '.
 dotenv.config();
 // replace the value below with the Telegram token you receive from @BotFather
 
-const token = process.env.TOKEN;
+const token = process.env.BOT_TOKEN;
 
-const greeterText = `Привіт, мене звати CheClean. Я створений щоб допомогти нашому місту стати краще 😊 \n*Команди бота:* \n/create - початок роботи. \n/help - допомога. \n/contacts - зв'язок з моїм розробником.`;
+const greeterText = `Привіт, мене звати CheClean. Я створений для допомоги нашому місту 😊 Для початку роботи натисни на команду /create`;
 
 const caseCreator = new WizardScene(
 	'case-creator',
 	(ctx) => {
-		ctx.replyWithMarkdown(greeterText);
+		ctx.reply(greeterText);
 		return ctx.wizard.next();
 	},
 	createCaseHandler,
