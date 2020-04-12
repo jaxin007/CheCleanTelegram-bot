@@ -1,39 +1,40 @@
 {
-	"name": "CheClean",
-	"version": "",
-	"description": "",
-	"main": "app,.js",
-	"dependencies": {
-		"axios": "^0.19.2",
-		"dotenv": "^8.2.0",
-		"express": "^4.17.1",
-		"https": "^1.0.0",
-		"node-telegram-bot-api": "^0.40.0",
-		"sharp": "^0.25.0"
-	},
-	"engines": {
-		"node": "10.16.3"
-	},
-	"devDependencies": {
-		"eslint": "^6.6.0",
-		"eslint-config-airbnb-base": "^14.0.0",
-		"eslint-config-prettier": "^6.5.0",
-		"eslint-plugin-import": "^2.18.2",
-		"eslint-plugin-prettier": "^3.1.1",
-		"husky": "^3.0.9",
-		"nodemon": "^2.0.2",
-		"prettier": "^1.19.1"
-	},
-	"scripts": {
-		"test": "echo \"Error: no test specified\" && exit 1",
-		"lint": "npx eslint ./src/**.js --fix",
-		"start": "node ./src/bot.js"
-	},
-	"husky": {
-		"hooks": {
-			"pre-commit": ""
-		}
-	},
-	"author": "jaxin007",
-	"license": "ISC"
+  "name": "CheClean",
+  "version": "",
+  "description": "",
+  "main": "app,.js",
+  "type": "module",
+  "dependencies": {
+    "axios": "^0.19.2",
+    "dotenv": "^8.2.0",
+    "express": "^4.17.1",
+    "https": "^1.0.0",
+    "sharp": "^0.25.0",
+    "telegraf": "^3.37.0"
+  },
+  "engines": {
+    "node": "13.12.0"
+  },
+  "devDependencies": {
+    "eslint": "^6.6.0",
+    "eslint-config-airbnb-base": "^14.0.0",
+    "eslint-config-prettier": "^6.5.0",
+    "eslint-plugin-import": "^2.18.2",
+    "eslint-plugin-prettier": "^3.1.1",
+    "husky": "^3.0.9",
+    "nodemon": "^2.0.2",
+    "prettier": "^1.19.1"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "lint": "npx eslint ./src/**.js --fix",
+    "start": "node ./src/bot.js"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": ""
+    }
+  },
+  "author": "jaxin007",
+  "license": "ISC"
 }
