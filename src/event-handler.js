@@ -34,11 +34,17 @@ photoHandler.on('photo', async (ctx) => {
 	const biggestPhoto = photosList[lastPhoto];
 
 	const url = await ctx.telegram.getFileLink(biggestPhoto);
-	console.log(url);
-	const image = await takeImageFromUrl(url);
-	ctx.wizard.state.data.image = url;
+	ctx.wizard.state.data.imageURL = url;
 
-	ctx.reply('Майже готово! Тепер передай мені свою локацію.');
+	const image = await takeImageFromUrl(url);
+	ctx.wizard.state.data.image = image;
+
+	ctx.reply('Майже готово! Тепер передай мені свою локацію.', {
+		reply_markup: {
+			one_time_keyboard: true,
+			keyboard: [ [ { text: 'Передати локацію', request_location: true } ] ]
+		}
+	});
 	return ctx.wizard.next();
 });
 photoHandler.use((ctx) => ctx.reply('Будь-ласка, пришли мені спочатку фото.'));
@@ -49,24 +55,32 @@ locationHandler.on('location', (ctx) => {
 	const createdCase = ctx.wizard.state.data;
 	ctx.wizard.state.data.location = location;
 
-	ctx.reply({ Опис: createdCase.description, Фото: createdCase.image });
-	ctx.reply('Підтвердіть коректність свого запиту', {
-		reply_markup: {
-			inline_keyboard: [
-				[ { text: 'Підтвердити', callback_data: 'approved' }, { text: 'Відхилити', callback_data: 'declined' } ]
-			]
+	ctx.replyWithPhoto(
+		{ source: createdCase.image, filename: 'photo.jpeg' },
+		{
+			caption: `${createdCase.description} \n\n\n\nПідтвердіть коректність свого запиту`,
+			reply_markup: {
+				inline_keyboard: [
+					[
+						{ text: 'Підтвердити', callback_data: 'approved' },
+						{ text: 'Відхилити', callback_data: 'declined' }
+					]
+				]
+			}
 		}
-	});
+	);
 	return ctx.wizard.next();
 });
 locationHandler.use((ctx) => ctx.reply('Будь-ласка, пришли мені свою локацію.'));
 
 export const validateHandler = new Composer();
 validateHandler.action('approved', (ctx) => {
+	ctx.editMessageReplyMarkup({});
 	ctx.reply('Дякуємо за вашу підтримку! Ваш запит було відправлено на обробку.');
 	return ctx.scene.leave();
 });
 validateHandler.action('declined', (ctx) => {
+	ctx.editMessageReplyMarkup({});
 	ctx.reply('Спробуйте ще раз :)');
 	return ctx.scene.leave();
 });

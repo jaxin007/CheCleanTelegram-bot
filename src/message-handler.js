@@ -1,7 +1,6 @@
 import Telegraf from 'telegraf';
 import session from 'telegraf/session.js';
 import Stage from 'telegraf/stage.js';
-import Markup from 'telegraf/markup.js';
 import WizardScene from 'telegraf/scenes/wizard/index.js';
 import dotenv from 'dotenv';
 import {
@@ -14,7 +13,6 @@ import {
 } from './event-handler.js';
 
 dotenv.config();
-
 const token = process.env.BOT_TOKEN;
 
 const caseCreator = new WizardScene(
@@ -31,7 +29,7 @@ const bot = new Telegraf(token);
 const stage = new Stage([ caseCreator ], { default: 'case-creator' });
 
 stage.command('cancel', (ctx) => {
-	ctx.reply('`Спробуємо в інший раз!`;');
+	ctx.reply('Спробуємо в інший раз!');
 	ctx.scene.leave('case-creator');
 });
 
