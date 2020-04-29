@@ -12,6 +12,6 @@ services:
   redis:
     image: 'redis:6.0-rc'
     environment:
-      - 'REDIS_HOST=localhost'
+      - 'TELEGRAM_SESSION_HOST=localhost'
     ports:
       - '6379:6379'
