@@ -41,7 +41,7 @@ photoHandler.on('photo', async (ctx) => {
 
 	const url = await ctx.telegram.getFileLink(biggestPhoto);
 
-	ctx.wizard.state.data.imageURL = url;
+	ctx.wizard.state.data.image_url = url;
 
 	ctx.reply('Майже готово! Тепер передай мені свою локацію.', {
 		reply_markup: {
@@ -60,7 +60,7 @@ locationHandler.on('location', async (ctx) => {
 	ctx.wizard.state.data.location = location;
 
 	await ctx.replyWithPhoto(
-		{ url: createdCase.imageURL },
+		{ url: createdCase.image_url },
 		{
 			caption: `${createdCase.description} \n\n\n\nПідтвердіть коректність свого запиту`,
 			reply_markup: {
