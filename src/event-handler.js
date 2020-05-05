@@ -26,8 +26,8 @@ createCaseHandler.command('create', (ctx) => {
 export const textHandler = new Composer();
 textHandler.on('text', (ctx) => {
 	ctx.wizard.state.data = {};
-	const description = ctx.update.message.text;
-	ctx.wizard.state.data.description = description;
+	const details = ctx.update.message.text;
+	ctx.wizard.state.data.details = details;
 	ctx.reply('Круто! Тепер пришли мені фото місця.');
 	return ctx.wizard.next();
 });
@@ -62,7 +62,7 @@ locationHandler.on('location', async (ctx) => {
 	await ctx.replyWithPhoto(
 		{ url: createdCase.image_url },
 		{
-			caption: `${createdCase.description} \n\n\n\nПідтвердіть коректність свого запиту`,
+			caption: `${createdCase.details} \n\n\n\nПідтвердіть коректність свого запиту`,
 			reply_markup: {
 				inline_keyboard: [
 					[
