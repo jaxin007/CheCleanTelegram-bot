@@ -7,11 +7,11 @@ services:
       - redis
     volumes:
       - '.:/usr/src/app'
+    environment:
+      - 'TELEGRAM_SESSION_HOST=redis'
     env_file: '.env'
 
   redis:
     image: 'redis:6.0-rc'
-    environment:
-      - 'TELEGRAM_SESSION_HOST=localhost'
     ports:
       - '6379:6379'
