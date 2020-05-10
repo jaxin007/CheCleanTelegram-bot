@@ -9,11 +9,12 @@ module.exports = {
 		SharedArrayBuffer: 'readonly'
 	},
 	parserOptions: {
-		ecmaVersion: 2018,
+		ecmaVersion: 2020,
 		sourceType: 'module'
 	},
 	rules: {
-		allowForLoopAfterthoughts: true,
+		"import/prefer-default-export": "off",
+    	"import/no-default-export": "error",
 		'no-console': 'off',
 		semi: [ 'error', 'always' ]
 	},
