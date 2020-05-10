@@ -1,11 +1,11 @@
 import Composer from 'telegraf';
 import { apiService } from './dependencies.js';
 
+const createCaseText = `Щоб розпочати роботу, пришли мені опис, фото та локацію місця події. Роби все послідовно, тобто спочатку опис, потім фото, а в кінці локація.\n\n*Чекаю від тебе опис того, що ти бачиш.*`;
+
 export const botUseHandler = (ctx) => {
   if (ctx.update.message.text === '/create' && ctx.update.callback_query.data === 'create') {
-    ctx.replyWithMarkdown(
-      `Щоб розпочати роботу, пришли мені опис, фото та локацію місця події. Роби все послідовно, тобто спочатку опис, потім фото, а в кінці локація.\n\n*Чекаю від тебе опис місця.*`,
-    );
+    ctx.replyWithMarkdown(createCaseText);
     return ctx.wizard.selectStep(2);
   }
   ctx.replyWithMarkdown(
@@ -27,9 +27,7 @@ export const botUseHandler = (ctx) => {
 
 function createCase(ctx) {
   ctx.editMessageReplyMarkup({});
-  ctx.replyWithMarkdown(
-    `Щоб розпочати роботу, пришли мені опис, фото та локацію місця події. Роби все послідовно, тобто спочатку опис, потім фото, а в кінці локація.\n\n*Чекаю від тебе опис того, що ти бачиш.*`,
-  );
+  ctx.replyWithMarkdown(createCaseText);
   return ctx.wizard.next();
 }
 
