@@ -47,7 +47,6 @@ function helpHandler(ctx) {
 }
 
 stage.help(helpHandler);
-
 stage.action('help', helpHandler);
 
 stage.command('contacts', (ctx) => {
