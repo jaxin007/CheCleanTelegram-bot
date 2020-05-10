@@ -40,17 +40,27 @@ const caseCreator = new WizardScene(
 const bot = new Telegraf(token);
 const stage = new Stage([caseCreator], { default: 'case-creator' });
 
-stage.help((ctx) =>
+function helpHandler(ctx) {
   ctx.replyWithMarkdown(
     `Для *початку* роботи: /create \nДля *допомоги*: /help \nДля *відміни*: /cancel`,
-  ),
-);
+  );
+}
+
+stage.help(helpHandler);
+stage.action('help', helpHandler);
 
 stage.command('contacts', (ctx) => {
   ctx.reply('За всіма питаннями щодо роботи бота звертайтесь сюди: @jaxin007');
 });
 
 stage.command('cancel', (ctx) => {
+  ctx.reply('Спробуємо в інший раз!');
+  ctx.scene.leave('case-creator');
+  ctx.session = null;
+});
+
+stage.action('cancel', (ctx) => {
+  ctx.editMessageReplyMarkup({});
   ctx.reply('Спробуємо в інший раз!');
   ctx.scene.leave('case-creator');
   ctx.session = null;
