@@ -1,18 +1,17 @@
-import Telegraf from 'telegraf';
-import RedisSession from 'telegraf-session-redis';
-import Stage from 'telegraf/stage.js';
-import WizardScene from 'telegraf/scenes/wizard/index.js';
-import dotenv from 'dotenv';
-import {
+const Telegraf = require('telegraf');
+const RedisSession = require('telegraf-session-redis');
+const Stage = require('telegraf/stage');
+const WizardScene = require('telegraf/scenes/wizard/index');
+require('dotenv').config();
+const {
   botUseHandler,
   createCaseHandler,
   textHandler,
   photoHandler,
   locationHandler,
   validateHandler,
-} from './src/event-handler.js';
+} = require('./src/event-handler');
 
-dotenv.config();
 const token = process.env.BOT_TOKEN;
 
 const session = new RedisSession({
