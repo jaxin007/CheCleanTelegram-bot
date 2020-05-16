@@ -1,6 +1,7 @@
-import dotenv from 'dotenv';
-import { ApiService } from './api-service.js';
+const { ApiService } = require('./api-service');
 
-dotenv.config();
+const apiService = new ApiService(process.env.API_URL);
 
-export const apiService = new ApiService(process.env.API_URL);
+module.exports = {
+  apiService,
+};

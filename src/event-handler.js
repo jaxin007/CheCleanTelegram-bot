@@ -1,9 +1,9 @@
-import Composer from 'telegraf';
-import { apiService } from './dependencies.js';
+const Composer = require('telegraf/composer');
+const { apiService } = require('./dependencies');
 
 const createCaseText = `Щоб розпочати роботу, пришли мені опис, фото та локацію місця події. Роби все послідовно, тобто спочатку опис, потім фото, а в кінці локація.\n\n*Чекаю від тебе опис того, що ти бачиш.*`;
 
-export const botUseHandler = (ctx) => {
+const botUseHandler = (ctx) => {
   if (ctx.update.message.text === '/create' && ctx.update.callback_query.data === 'create') {
     ctx.replyWithMarkdown(createCaseText);
     return ctx.wizard.selectStep(2);
@@ -31,11 +31,11 @@ function createCase(ctx) {
   return ctx.wizard.next();
 }
 
-export const createCaseHandler = new Composer();
+const createCaseHandler = new Composer();
 createCaseHandler.command('create', createCase);
 createCaseHandler.action('create', createCase);
 
-export const textHandler = new Composer();
+const textHandler = new Composer();
 textHandler.on('text', (ctx) => {
   ctx.wizard.state.data = {};
   const details = ctx.update.message.text;
@@ -45,7 +45,7 @@ textHandler.on('text', (ctx) => {
 });
 textHandler.use((ctx) => ctx.reply('Будь-ласка, пришли мені опис того, що ти бачиш.'));
 
-export const photoHandler = new Composer();
+const photoHandler = new Composer();
 photoHandler.on('photo', async (ctx) => {
   const photosList = ctx.update.message.photo;
   const lastPhoto = photosList.length - 1;
@@ -65,7 +65,7 @@ photoHandler.on('photo', async (ctx) => {
 });
 photoHandler.use((ctx) => ctx.reply('Будь-ласка, пришли мені спочатку фото.'));
 
-export const locationHandler = new Composer();
+const locationHandler = new Composer();
 locationHandler.on('location', async (ctx) => {
   const { location } = ctx.update.message;
   const createdCase = ctx.wizard.state.data;
@@ -89,7 +89,7 @@ locationHandler.on('location', async (ctx) => {
 });
 locationHandler.use((ctx) => ctx.reply('Будь-ласка, пришли мені свою локацію.'));
 
-export const validateHandler = new Composer();
+const validateHandler = new Composer();
 validateHandler.action('approved', (ctx) => {
   const createdCase = ctx.wizard.state.data;
   apiService
@@ -104,3 +104,12 @@ validateHandler.action('declined', (ctx) => {
   ctx.reply('Спробуйте ще раз :)');
   return ctx.scene.leave();
 });
+
+module.exports = {
+  botUseHandler,
+  createCaseHandler,
+  textHandler,
+  photoHandler,
+  locationHandler,
+  validateHandler,
+};

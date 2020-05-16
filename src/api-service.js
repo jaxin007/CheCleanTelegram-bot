@@ -1,7 +1,7 @@
-import axios from 'axios';
-import * as path from 'path';
+const axios = require('axios');
+const path = require('path');
 
-export class ApiService {
+class ApiService {
   constructor(apiUrl) {
     this.apiUrl = apiUrl;
   }
@@ -14,3 +14,7 @@ export class ApiService {
     });
   }
 }
+
+module.exports = {
+  ApiService,
+};
