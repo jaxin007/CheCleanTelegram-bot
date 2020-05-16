@@ -1,10 +1,11 @@
 const Composer = require('telegraf/composer');
 const { apiService } = require('./dependencies');
+const { getSafe } = require('./get-safe');
 
 const createCaseText = 'Щоб розпочати роботу, пришли мені опис, фото та локацію місця події. Роби все послідовно, тобто спочатку опис, потім фото, а в кінці локація.\n\n*Чекаю від тебе опис того, що ти бачиш.*';
 
 const botUseHandler = (ctx) => {
-  if (ctx.update.message.text === '/create' && ctx.update.callback_query.data === 'create') {
+  if (getSafe(() => ctx.update.message.text === '/create' && ctx.update.callback_query.data === 'create')) {
     ctx.replyWithMarkdown(createCaseText);
     return ctx.wizard.selectStep(2);
   }
@@ -12,6 +13,7 @@ const botUseHandler = (ctx) => {
     'Привіт, мене звати CheClean. Я створений для допомоги нашому місту 😊 \nДля *початку* роботи натисни на кнопку внизу, або використай команду /create.',
     {
       reply_markup: {
+        one_time_keyboard: true,
         inline_keyboard: [
           [
             { text: 'Допомога', callback_data: 'help' },
@@ -26,7 +28,6 @@ const botUseHandler = (ctx) => {
 };
 
 function createCase(ctx) {
-  ctx.editMessageReplyMarkup({});
   ctx.replyWithMarkdown(createCaseText);
   return ctx.wizard.next();
 }

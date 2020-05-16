@@ -45,6 +45,16 @@ function helpHandler(ctx) {
   );
 }
 
+function cancelHandler(ctx) {
+  if (ctx.update.callback_query) {
+    ctx.editMessageReplyMarkup({});
+  }
+
+  ctx.reply('Спробуємо в інший раз!');
+  ctx.scene.leave('case-creator');
+  ctx.session = null;
+}
+
 stage.help(helpHandler);
 stage.action('help', helpHandler);
 
@@ -52,18 +62,8 @@ stage.command('contacts', (ctx) => {
   ctx.reply('За всіма питаннями щодо роботи бота звертайтесь сюди: @jaxin007');
 });
 
-stage.command('cancel', (ctx) => {
-  ctx.reply('Спробуємо в інший раз!');
-  ctx.scene.leave('case-creator');
-  ctx.session = null;
-});
-
-stage.action('cancel', (ctx) => {
-  ctx.editMessageReplyMarkup({});
-  ctx.reply('Спробуємо в інший раз!');
-  ctx.scene.leave('case-creator');
-  ctx.session = null;
-});
+stage.command('cancel', cancelHandler);
+stage.action('cancel', cancelHandler);
 
 bot.use(session);
 bot.use(stage.middleware());
