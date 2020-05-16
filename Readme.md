@@ -49,8 +49,15 @@ When you send the `/create` command, the bot asks you to give a description, pho
 ```
 ### Docker
 You may use this app only with [docker](https://www.docker.com/). 
+
+You can use this command for the first launch or on CI.
 ```shell
-> docker-compose up
+> npm run docker:init
+```
+
+After previous step you can use the following command for local development.
+```shell
+> npm run docker
 ```
 
 ## Credits

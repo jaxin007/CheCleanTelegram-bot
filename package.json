@@ -21,6 +21,8 @@
   },
   "scripts": {
     "start": "nodemon app.js",
+    "docker:init": "docker-compose build && docker-compose up",
+    "docker": "docker-compose up",
     "test": "echo \"Error: no test specified\" && exit 1",
     "lint:fix": "npx eslint ./src/**/*.js --fix"
   },

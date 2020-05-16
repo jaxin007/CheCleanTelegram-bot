@@ -41,7 +41,7 @@ const stage = new Stage([caseCreator], { default: 'case-creator' });
 
 function helpHandler(ctx) {
   ctx.replyWithMarkdown(
-    `Для *початку* роботи: /create \nДля *допомоги*: /help \nДля *відміни*: /cancel`,
+    'Для *початку* роботи: /create \nДля *допомоги*: /help \nДля *відміни*: /cancel',
   );
 }
 
