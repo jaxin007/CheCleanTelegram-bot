@@ -1,5 +1,4 @@
 const axios = require('axios');
-const path = require('path');
 
 class ApiService {
   constructor(apiUrl) {
@@ -7,7 +6,7 @@ class ApiService {
   }
 
   sendCase(createdCase) {
-    return axios.post(path.join(this.apiUrl, 'case'), createdCase, {
+    return axios.post(`${this.apiUrl}/cases`, createdCase, {
       headers: {
         'Content-Type': 'application/json',
       },
