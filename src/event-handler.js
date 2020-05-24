@@ -93,6 +93,7 @@ locationHandler.use((ctx) => ctx.reply('Будь-ласка, пришли мен
 const validateHandler = new Composer();
 validateHandler.action('approved', (ctx) => {
   const createdCase = ctx.wizard.state.data;
+  ctx.telegram.sendChatAction(ctx.update.callback_query.message.chat.id, 'upload_document');
   apiService
     .sendCase(createdCase)
     .then(() => ctx.reply('Дякуємо за вашу підтримку! Ваш запит було відправлено на обробку.'))
