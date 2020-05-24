@@ -10,7 +10,9 @@ class ApiService {
       headers: {
         'Content-Type': 'application/json',
       },
-    }).catch((err) => console.error(err));
+    }).catch((err) => {
+      throw new Error(err);
+    });
   }
 }
 
