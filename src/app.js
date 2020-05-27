@@ -3,14 +3,8 @@ const RedisSession = require('telegraf-session-redis');
 const Stage = require('telegraf/stage');
 const WizardScene = require('telegraf/scenes/wizard/index');
 require('dotenv').config();
-const {
-  botUseHandler,
-  createCaseHandler,
-  textHandler,
-  photoHandler,
-  locationHandler,
-  validateHandler,
-} = require('./src/event-handler');
+const { messageHandler } = require('./services/index');
+const { botTexts } = require('./bot-text');
 
 const token = process.env.BOT_TOKEN;
 
@@ -28,21 +22,19 @@ const session = new RedisSession({
 
 const caseCreator = new WizardScene(
   'case-creator',
-  botUseHandler,
-  createCaseHandler,
-  textHandler,
-  photoHandler,
-  locationHandler,
-  validateHandler,
+  messageHandler.botUseHandler,
+  messageHandler.createCaseComposer(),
+  messageHandler.textComposer(),
+  messageHandler.photoComposer(),
+  messageHandler.locationComposer(),
+  messageHandler.validateCaseComposer(),
 );
 
 const bot = new Telegraf(token);
 const stage = new Stage([caseCreator], { default: 'case-creator' });
 
 function helpHandler(ctx) {
-  ctx.replyWithMarkdown(
-    'Для *початку* роботи: /create \nДля *допомоги*: /help \nДля *відміни*: /cancel',
-  );
+  ctx.replyWithMarkdown(botTexts.helpButtonAnswerText);
 }
 
 function cancelHandler(ctx) {
@@ -50,7 +42,7 @@ function cancelHandler(ctx) {
     ctx.editMessageReplyMarkup({});
   }
 
-  ctx.reply('Спробуємо в інший раз!');
+  ctx.reply(botTexts.cancelButtonAnswerText);
   ctx.scene.leave('case-creator');
   ctx.session = null;
 }
@@ -59,7 +51,7 @@ stage.help(helpHandler);
 stage.action('help', helpHandler);
 
 stage.command('contacts', (ctx) => {
-  ctx.reply('За всіма питаннями щодо роботи бота звертайтесь сюди: @jaxin007');
+  ctx.reply(botTexts.contactsButtonAnswerText);
 });
 
 stage.command('cancel', cancelHandler);
