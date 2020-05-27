@@ -3,7 +3,7 @@ const RedisSession = require('telegraf-session-redis');
 const Stage = require('telegraf/stage');
 const WizardScene = require('telegraf/scenes/wizard/index');
 require('dotenv').config();
-const { messageHandlerService } = require('./services/index');
+const { messageHandlerService } = require('./services');
 const { botTexts } = require('./bot-text');
 
 const token = process.env.BOT_TOKEN;

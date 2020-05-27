@@ -1,4 +1,4 @@
-# CheClean ![](https://cdn1.savepice.ru/uploads/2020/4/29/12359aaeeca0908fe7afd91c61b4478c-full.png)
+# CheClean ![Project-logo](docs/CheClean-logo.png)
 
 ## The goal of this project is to make Cherkasy cleaner and better. The bot helps deliver garbage places location to cleaner utilities.
 
