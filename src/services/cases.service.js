@@ -2,7 +2,7 @@ const Composer = require('telegraf/composer');
 const { getSafe } = require('../utils/get-safe');
 const { botTexts } = require('../bot-text');
 
-class MessageHandler {
+class MessageHandlerService {
   constructor(apiService) {
     this.apiService = apiService;
   }
@@ -12,6 +12,7 @@ class MessageHandler {
       ctx.replyWithMarkdown(botTexts.createCaseText);
       return ctx.wizard.selectStep(2);
     }
+
     ctx.replyWithMarkdown(
       botTexts.greetingsText,
       {
@@ -30,17 +31,17 @@ class MessageHandler {
     return ctx.wizard.next();
   }
 
-  createCase(ctx) {
-    ctx.replyWithMarkdown(botTexts.createCaseText);
-    return ctx.wizard.next();
-  }
-
   createCaseComposer() {
     const createCaseHandler = new Composer();
     createCaseHandler.command('create', (ctx) => this.createCase(ctx));
     createCaseHandler.action('create', (ctx) => this.createCase(ctx));
 
     return createCaseHandler;
+  }
+
+  createCase(ctx) {
+    ctx.replyWithMarkdown(botTexts.createCaseText);
+    return ctx.wizard.next();
   }
 
   textComposer() {
@@ -129,8 +130,22 @@ class MessageHandler {
 
     return validateHandler;
   }
+
+  cancelHandler(ctx) {
+    if (ctx.update.callback_query) {
+      ctx.editMessageReplyMarkup({});
+    }
+
+    ctx.reply(botTexts.cancelButtonAnswerText);
+    ctx.session = null;
+    ctx.scene.leave('case-creator');
+  }
+
+  helpHandler(ctx) {
+    ctx.replyWithMarkdown(botTexts.helpButtonAnswerText);
+  }
 }
 
 module.exports = {
-  MessageHandler,
+  MessageHandlerService,
 };
