@@ -66,8 +66,12 @@ class MessageHandlerService {
       const biggestPhoto = photosList[lastPhoto];
 
       const url = await ctx.telegram.getFileLink(biggestPhoto);
+      const fileName = `${biggestPhoto.file_unique_id}.jpeg`;
+      await this.apiService.uploadFile(url, fileName);
 
-      ctx.wizard.state.data.image_url = url;
+      const filePublicUrl = `https://storage.googleapis.com/telegram-photos-test-checlean/${fileName}`;
+
+      ctx.wizard.state.data.image_url = filePublicUrl;
 
       ctx.reply(botTexts.locationRequestText, {
         reply_markup: {
