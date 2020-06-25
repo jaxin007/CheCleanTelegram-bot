@@ -3,11 +3,12 @@ const { Storage } = require('@google-cloud/storage');
 const path = require('path');
 
 class ApiService {
-  constructor(apiUrl) {
+  constructor(apiUrl, googleBuckenName, googleAccountFile, googleProjectId) {
     this.apiUrl = apiUrl;
+    this.googleBuckenName = googleBuckenName;
     this.gc = new Storage({
-      keyFilename: path.join(__dirname, `../api/${process.env.GOOGLE_PROJECT_ACCOUNT_FILE}`),
-      projectId: process.env.GOOGLE_PROJECT_ID,
+      keyFilename: path.join(__dirname, `../google-storage-config/${googleAccountFile}`),
+      projectId: googleProjectId,
     });
   }
 
@@ -23,7 +24,7 @@ class ApiService {
 
   async uploadFile(url, fileName) {
     const response = (await (axios.get(url, { responseType: 'arraybuffer' }))).data;
-    this.gc.bucket(process.env.GOOGLE_BUCKET_NAME)
+    this.gc.bucket(this.googleBuckenName)
       .file(fileName)
       .save(response, (err) => {
         if (err) {
