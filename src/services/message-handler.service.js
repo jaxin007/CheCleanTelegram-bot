@@ -66,12 +66,9 @@ class MessageHandlerService {
       const biggestPhoto = photosList[lastPhoto];
 
       const url = await ctx.telegram.getFileLink(biggestPhoto);
-      const fileName = `${biggestPhoto.file_unique_id}.jpeg`;
-      await this.apiService.uploadFile(url, fileName);
 
-      const filePublicUrl = `https://storage.googleapis.com/telegram-photos-test-checlean/${fileName}`;
-
-      ctx.wizard.state.data.image_url = filePublicUrl;
+      ctx.wizard.state.data.image_url = url;
+      ctx.wizard.state.data.file_id = biggestPhoto.file_unique_id;
 
       ctx.reply(botTexts.locationRequestText, {
         reply_markup: {
@@ -116,7 +113,21 @@ class MessageHandlerService {
 
   validateCaseComposer() {
     const validateHandler = new Composer();
-    validateHandler.action('approved', (ctx) => {
+    validateHandler.action('approved', async (ctx) => {
+      const telegramPhotoUrl = ctx.wizard.state.data.image_url;
+      try {
+        const fileUniqueName = ctx.wizard.state.data.file_id;
+        const fileName = `${fileUniqueName}.jpeg`;
+        const filePublicUrl = `https://storage.googleapis.com/telegram-photos-test-checlean/${fileName}`;
+
+        await this.apiService.uploadFileByUrl(telegramPhotoUrl, fileName);
+        ctx.wizard.state.data.image_url = filePublicUrl;
+      } catch (err) {
+        console.error(err);
+      }
+
+      delete ctx.wizard.state.data.file_id; // we don't need file id anymore, so we delete it
+
       const createdCase = ctx.wizard.state.data;
       ctx.telegram.sendChatAction(ctx.update.callback_query.message.chat.id, 'upload_document');
       this.apiService

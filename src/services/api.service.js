@@ -22,7 +22,7 @@ class ApiService {
     });
   }
 
-  async uploadFile(url, fileName) {
+  async uploadFileByUrl(url, fileName) {
     const response = (await (axios.get(url, { responseType: 'arraybuffer' }))).data;
     this.gc.bucket(this.googleBuckenName)
       .file(fileName)
