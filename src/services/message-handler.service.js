@@ -115,17 +115,20 @@ class MessageHandlerService {
     const validateHandler = new Composer();
     validateHandler.action('approved', async (ctx) => {
       const telegramPhotoUrl = ctx.wizard.state.data.image_url;
-      const fileUniqueName = ctx.wizard.state.data.file_id;
-      const fileName = `${fileUniqueName}.jpeg`;
-      const filePublicUrl = `https://storage.googleapis.com/telegram-photos-test-checlean/${fileName}`;
+      try {
+        const fileUniqueName = ctx.wizard.state.data.file_id;
+        const fileName = `${fileUniqueName}.jpeg`;
+        const filePublicUrl = `https://storage.googleapis.com/telegram-photos-test-checlean/${fileName}`;
 
-      await this.apiService.uploadFileByUrl(telegramPhotoUrl, fileName);
+        await this.apiService.uploadFileByUrl(telegramPhotoUrl, fileName);
+        ctx.wizard.state.data.image_url = filePublicUrl;
+      } catch (err) {
+        console.error(err);
+      }
 
-      ctx.wizard.state.data.image_url = filePublicUrl;
       delete ctx.wizard.state.data.file_id; // we don't need file id anymore, so we delete it
 
       const createdCase = ctx.wizard.state.data;
-
       ctx.telegram.sendChatAction(ctx.update.callback_query.message.chat.id, 'upload_document');
       this.apiService
         .sendCase(createdCase)
