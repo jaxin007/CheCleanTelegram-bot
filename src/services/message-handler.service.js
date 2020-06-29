@@ -8,9 +8,9 @@ class MessageHandlerService {
   }
 
   botUseHandler(ctx) {
-    if (getSafe(() => ctx.update.message.text === '/create' && ctx.update.callback_query.data === 'create')) {
+    if (getSafe(() => ctx.update.message.text === '/create') || getSafe(() => ctx.update.callback_query.data === 'create')) {
       ctx.replyWithMarkdown(botTexts.createCaseText);
-      return ctx.wizard.selectStep(2);
+      return ctx.wizard.selectStep(1);
     }
 
     ctx.replyWithMarkdown(
@@ -90,6 +90,12 @@ class MessageHandlerService {
       const createdCase = ctx.wizard.state.data;
       ctx.wizard.state.data.location = location;
 
+      await ctx.telegram.sendChatAction(ctx.update.message.chat.id, 'upload_document');
+      await ctx.reply('Збираємо всі ваші дані до купи :) \n', {
+        reply_markup: {
+          remove_keyboard: true,
+        },
+      });
       await ctx.replyWithPhoto(
         { url: createdCase.image_url },
         {
@@ -130,10 +136,12 @@ class MessageHandlerService {
 
       const createdCase = ctx.wizard.state.data;
       ctx.telegram.sendChatAction(ctx.update.callback_query.message.chat.id, 'upload_document');
+
+      const { token } = (await this.apiService.userVerify()).data;
       this.apiService
-        .sendCase(createdCase)
+        .sendCase(createdCase, token)
         .then(() => ctx.reply(botTexts.caseApprovedText))
-        .catch(() => ctx.reply(botTexts.caseErrorText));
+        .catch((err) => ctx.reply(botTexts.caseErrorText));
       ctx.editMessageReplyMarkup({});
       return ctx.scene.leave();
     });

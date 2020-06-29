@@ -12,12 +12,30 @@ class ApiService {
     });
   }
 
-  sendCase(createdCase) {
-    return axios.post(`${this.apiUrl}/cases`, createdCase, {
-      headers: {
-        'Content-Type': 'application/json',
+  userVerify() {
+    return axios({
+      method: 'POST',
+      url: `${this.apiUrl}/login`,
+      data: {
+        username: process.env.JWT_USERNAME,
+        password: process.env.JWT_PASSWORD,
       },
-    }).catch((err) => {
+      config: {
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      },
+    });
+  }
+
+  sendCase(createdCase, token) {
+    return axios.post(`${this.apiUrl}/cases`, createdCase,
+      {
+        headers: {
+          authorization: `Bearer ${token}`,
+          'Content-Type': 'application/json',
+        },
+      }).catch((err) => {
       throw new Error(err);
     });
   }
