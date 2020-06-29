@@ -91,7 +91,7 @@ class MessageHandlerService {
       ctx.wizard.state.data.location = location;
 
       await ctx.telegram.sendChatAction(ctx.update.message.chat.id, 'upload_document');
-      await ctx.reply('Збираємо всі ваші дані до купи :) \n', {
+      await ctx.reply('Збираємо всі ваші дані до купи :)', {
         reply_markup: {
           remove_keyboard: true,
         },
