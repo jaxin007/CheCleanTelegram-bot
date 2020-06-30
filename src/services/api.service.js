@@ -12,20 +12,19 @@ class ApiService {
     });
   }
 
-  userVerify() {
-    return axios({
-      method: 'POST',
-      url: `${this.apiUrl}/login`,
-      data: {
+  loginBot() {
+    return axios.post(
+      `${this.apiUrl}/login`,
+      {
         username: process.env.JWT_USERNAME,
         password: process.env.JWT_PASSWORD,
       },
-      config: {
+      {
         headers: {
           'Content-Type': 'application/json',
         },
       },
-    });
+    ).then((response) => response.data);
   }
 
   sendCase(createdCase, token) {

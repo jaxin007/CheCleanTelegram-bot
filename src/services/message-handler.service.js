@@ -137,7 +137,7 @@ class MessageHandlerService {
       const createdCase = ctx.wizard.state.data;
       ctx.telegram.sendChatAction(ctx.update.callback_query.message.chat.id, 'upload_document');
 
-      const { token } = (await this.apiService.userVerify()).data;
+      const { token } = this.apiService.loginBot().catch((err) => console.error(err));
       this.apiService
         .sendCase(createdCase, token)
         .then(() => ctx.reply(botTexts.caseApprovedText))
