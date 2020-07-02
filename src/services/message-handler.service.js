@@ -10,7 +10,7 @@ class MessageHandlerService {
   botUseHandler(ctx) {
     if (getSafe(() => ctx.update.message.text === '/create') || getSafe(() => ctx.update.callback_query.data === 'create')) {
       ctx.replyWithMarkdown(botTexts.createCaseText);
-      return ctx.wizard.selectStep(1);
+      return ctx.wizard.selectStep(2);
     }
 
     ctx.replyWithMarkdown(
