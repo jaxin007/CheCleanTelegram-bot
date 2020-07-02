@@ -24,7 +24,7 @@ class ApiService {
           'Content-Type': 'application/json',
         },
       },
-    ).then((response) => response.data);
+    ).then((response) => response.data.token);
   }
 
   sendCase(createdCase, token) {
