@@ -34,7 +34,7 @@ class ApiService {
           authorization: `Bearer ${token}`,
           'Content-Type': 'application/json',
         },
-      }).then((response) => response.data.id)
+      }).then((response) => response.data.id);
   }
 
   async uploadFileByUrl(url, fileName) {

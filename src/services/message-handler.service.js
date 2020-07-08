@@ -140,12 +140,12 @@ class MessageHandlerService {
       const token = await this.apiService.loginBot().catch((err) => console.error(err));
       const sentCaseId = await this.apiService
         .sendCase(createdCase, token)
+        .then(() => ctx.reply(`${botTexts.caseApprovedText} ${botTexts.caseUrl}${sentCaseId}`))
         .catch((err) => {
-          console.error(err);
+          console.error(err.message);
           return ctx.reply(botTexts.caseErrorText);
         });
 
-      ctx.reply(`${botTexts.caseApprovedText} ${botTexts.caseUrl}${sentCaseId}`);
       ctx.editMessageReplyMarkup({});
 
       return ctx.scene.leave();
