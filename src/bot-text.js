@@ -17,7 +17,7 @@ const botTexts = {
   caseApproveButtonText: 'Підтвердити',
   caseDeclineButtonText: 'Відхилити',
   caseApprovedText: 'Дякуємо, що звернулись!\nВи можете відстежити стан Вашої заявки на сайті за посиланням:',
-  caseUrl: 'http://checlean.inforg.io/cases/',
+  caseUrl: 'checlean.inforg.io/cases/',
   caseDeclinedText: 'Спробуйте ще раз :)',
   caseErrorText: 'Щось пішло не так :)',
 };
