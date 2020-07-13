@@ -138,11 +138,16 @@ class MessageHandlerService {
       ctx.telegram.sendChatAction(ctx.update.callback_query.message.chat.id, 'upload_document');
 
       const token = await this.apiService.loginBot().catch((err) => console.error(err));
-      this.apiService
+      await this.apiService
         .sendCase(createdCase, token)
-        .then(() => ctx.reply(botTexts.caseApprovedText))
-        .catch((err) => ctx.reply(botTexts.caseErrorText));
+        .then((response) => ctx.reply(`${botTexts.caseApprovedText} ${botTexts.caseUrl}${response}`))
+        .catch((err) => {
+          console.error(err.message);
+          return ctx.reply(botTexts.caseErrorText);
+        });
+
       ctx.editMessageReplyMarkup({});
+
       return ctx.scene.leave();
     });
     validateHandler.action('declined', (ctx) => {
