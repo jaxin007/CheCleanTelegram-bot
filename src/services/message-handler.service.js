@@ -7,13 +7,17 @@ class MessageHandlerService {
     this.apiService = apiService;
   }
 
-  botUseHandler(ctx) {
+  async botUseHandler(ctx) {
+    if (ctx.update.callback_query) {
+      await ctx.editMessageReplyMarkup({});
+    }
+
     if (getSafe(() => ctx.update.message.text === '/create') || getSafe(() => ctx.update.callback_query.data === 'create')) {
-      ctx.replyWithMarkdown(botTexts.createCaseText);
+      await ctx.replyWithMarkdown(botTexts.createCaseText);
       return ctx.wizard.selectStep(2);
     }
 
-    ctx.replyWithMarkdown(
+    await ctx.replyWithMarkdown(
       botTexts.greetingsText,
       {
         reply_markup: {
@@ -146,7 +150,18 @@ class MessageHandlerService {
           return ctx.reply(botTexts.caseErrorText);
         });
 
-      ctx.editMessageReplyMarkup({});
+      await ctx.editMessageReplyMarkup({});
+
+      await ctx.reply(`
+        Щоб створити нове звернення, натисни на кнопку.
+      `, {
+        reply_markup: {
+          inline_keyboard: [[
+            { text: 'Почати роботу', callback_data: 'create' },
+          ],
+          ],
+        },
+      });
 
       return ctx.scene.leave();
     });
