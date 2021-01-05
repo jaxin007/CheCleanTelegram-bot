@@ -5,7 +5,7 @@
   "main": "app,.js",
   "dependencies": {
     "@google-cloud/storage": "^5.1.1",
-    "axios": "^0.19.2",
+    "axios": "^0.21.1",
     "dotenv": "^8.2.0",
     "telegraf": "^3.37.0",
     "telegraf-session-redis": "^5.1.0"
