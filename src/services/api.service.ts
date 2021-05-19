@@ -32,16 +32,15 @@ export class ApiService {
     const { data } = await axios.post(
       `${this.apiUrl}/login`,
       {
-        username: process.env.JWT_USERNAME,
-        password: process.env.JWT_PASSWORD,
+        username: envConfig.JWT_USERNAME,
+        password: envConfig.JWT_PASSWORD,
       },
     );
 
     return data.token;
   }
 
-  // todo fix types
-  async sendCase(createdCase: any, token: string): Promise<string> {
+  async sendCase(createdCase: WizardStateDataInterface, token: string): Promise<string> {
     const { data } = await axios.post(`${this.apiUrl}/cases`, createdCase,
       {
         headers: {

@@ -1,8 +1,9 @@
 import { Context } from 'telegraf';
+import { v4 as uuidv4 } from 'uuid';
 
+import { apiService } from '../services';
 import { botTexts, Keyboards } from '../constants';
 import { MyContextInterface, WizardStateInterface } from '../interfaces';
-import { apiService } from '../services';
 
 export class TelegrafHelper {
   static async helpHandler(ctx: Context): Promise<any> {
@@ -46,8 +47,6 @@ export class TelegrafHelper {
 
     ctx.wizard.state.image_url = url.href;
 
-    ctx.wizard.state.file_id = biggestPhoto.file_unique_id;
-
     const locationRequestKeyboard = await Keyboards.photoComposerLocationRequestKeyboard();
 
     await ctx.reply(botTexts.locationRequestText, {
@@ -74,7 +73,7 @@ export class TelegrafHelper {
 
     await ctx.replyWithPhoto(
       {
-        url: image_url!,
+        url: image_url,
       },
       {
         caption: `${details} \n\n\n\n${botTexts.caseVerificationText}`,
@@ -86,13 +85,15 @@ export class TelegrafHelper {
   }
 
   static async validateCaseComposerOnApproved(ctx: MyContextInterface): Promise<void> {
-    const { image_url, file_id } = ctx.wizard.state;
+    const { image_url } = ctx.wizard.state;
 
-    const fileName = `${file_id}.jpeg`;
+    const uniqueFileName = uuidv4();
+
+    const fileName = `${uniqueFileName}.jpeg`;
 
     const filePublicUrl = `https://storage.googleapis.com/telegram-photos-test-checlean/${fileName}`;
 
-    await apiService.uploadFileByUrl(image_url!, fileName);
+    await apiService.uploadFileByUrl(image_url, fileName);
 
     ctx.wizard.state.image_url = filePublicUrl;
 

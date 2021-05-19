@@ -3,7 +3,7 @@
     "target": "ES6",
     "module": "CommonJS",
     "outDir": "./build",
-    "rootDir": ".",
+    "rootDir": "./src",
     "strict": true,
     "strictPropertyInitialization": false,
     "resolveJsonModule": true,

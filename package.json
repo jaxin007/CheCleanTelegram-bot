@@ -16,13 +16,15 @@
   },
   "dependencies": {
     "@google-cloud/storage": "^5.8.5",
-    "@telegraf/session": "^1.0.1",
     "axios": "^0.21.1",
     "dotenv": "^8.2.0",
     "telegraf": "^4.3.0",
-    "telegraf-session-redis": "^5.1.0"
+    "telegraf-session-redis": "^5.1.0",
+    "uuid": "^8.3.2"
   },
   "devDependencies": {
+    "@types/node": "^15.3.1",
+    "@types/uuid": "^8.3.0",
     "@typescript-eslint/eslint-plugin": "^4.7.0",
     "@typescript-eslint/parser": "^4.7.0",
     "eslint": "^7.13.0",
@@ -37,7 +39,7 @@
   "husky": {
     "hooks": {
       "pre-commit": "npm run lint:fix",
-      "pre-push": "npm audit"
+      "pre-push": ""
     }
   },
   "author": "jaxin007",
