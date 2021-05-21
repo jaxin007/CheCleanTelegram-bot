@@ -1,12 +1,17 @@
 import { Composer } from 'telegraf';
+import { inject, injectable } from 'inversify';
 
 import TelegrafController from '../controllers/telegrafController';
 import { TelegrafHelper } from '../helpers';
+import { botTexts, TYPES } from '../constants';
 import { TelegrafComposer } from '../types';
-import { botTexts } from '../constants';
+import { TelegrafHelperInterface, TelegrafServiceInterface } from '../interfaces';
 
-export class TelegrafService {
+@injectable()
+export class TelegrafService implements TelegrafServiceInterface {
   createComposer: () => Composer<TelegrafComposer>;
+
+  @inject(TYPES.TelegrafHelper) private readonly telegrafHelper: TelegrafHelperInterface;
 
   constructor() {
     this.createComposer = () => new Composer<TelegrafComposer>();
@@ -63,7 +68,7 @@ export class TelegrafService {
   validateCaseHandler(): Composer<TelegrafComposer> {
     const validateCaseCompose = this.createComposer();
 
-    validateCaseCompose.action('approved', TelegrafHelper.validateCaseComposerOnApproved);
+    validateCaseCompose.action('approved', (ctx) => this.telegrafHelper.validateCaseComposerOnApproved(ctx));
 
     validateCaseCompose.action('declined', (ctx) => {
       ctx.editMessageReplyMarkup({

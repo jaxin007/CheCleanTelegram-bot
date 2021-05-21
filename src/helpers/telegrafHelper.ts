@@ -1,11 +1,24 @@
 import { Context } from 'telegraf';
+import { injectable, inject } from 'inversify';
 import { v4 as uuidv4 } from 'uuid';
 
-import { apiService } from '../services';
-import { botTexts, Keyboards } from '../constants';
-import { MyContextInterface, WizardStateInterface } from '../interfaces';
+import {
+  botTexts,
+  Keyboards,
+  TYPES,
+} from '../constants';
+import {
+  ApiServiceInterface,
+  MyContextInterface,
+  TelegrafHelperInterface,
+  WizardStateInterface,
+} from '../interfaces';
 
-export class TelegrafHelper {
+@injectable()
+export class TelegrafHelper implements TelegrafHelperInterface {
+  @inject(TYPES.ApiService)
+  public apiService: ApiServiceInterface;
+
   static async helpHandler(ctx: Context): Promise<any> {
     return ctx.replyWithMarkdown(botTexts.helpButtonAnswerText);
   }
@@ -84,7 +97,7 @@ export class TelegrafHelper {
     return ctx.wizard.next();
   }
 
-  static async validateCaseComposerOnApproved(ctx: MyContextInterface): Promise<void> {
+  async validateCaseComposerOnApproved(ctx: MyContextInterface): Promise<void> {
     const { image_url } = ctx.wizard.state;
 
     const uniqueFileName = uuidv4();
@@ -93,15 +106,15 @@ export class TelegrafHelper {
 
     const filePublicUrl = `https://storage.googleapis.com/telegram-photos-test-checlean/${fileName}`;
 
-    await apiService.uploadFileByUrl(image_url, fileName);
+    await this.apiService.uploadFileByUrl(image_url, fileName);
 
     ctx.wizard.state.image_url = filePublicUrl;
 
     await ctx.telegram.sendChatAction(ctx.update.callback_query.message.chat.id, 'upload_document');
 
-    const token = await apiService.loginBot();
+    const token = await this.apiService.loginBot();
 
-    const res = await apiService.sendCase(ctx.wizard.state, token);
+    const res = await this.apiService.sendCase(ctx.wizard.state, token);
 
     await ctx.reply(`${botTexts.caseApprovedText} ${botTexts.caseUrl}${res}`);
 

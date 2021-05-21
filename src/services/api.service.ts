@@ -1,36 +1,35 @@
-import axios from 'axios';
 import path from 'path';
-import { Storage } from '@google-cloud/storage';
+import axios, { AxiosInstance } from 'axios';
+import { Bucket, Storage } from '@google-cloud/storage';
+import { injectable } from 'inversify';
 
 import { envConfig } from '../config';
-import { WizardStateDataInterface } from '../interfaces';
+import { ApiServiceInterface, WizardStateDataInterface } from '../interfaces';
 
-export class ApiService {
-  private readonly apiUrl: string;
-
-  private readonly googleBuckenName: string;
-
+@injectable()
+export class ApiService implements ApiServiceInterface {
   private readonly googleAccountFile: string;
 
-  private readonly googleProjectId: string;
+  private readonly gc: Bucket;
 
-  private readonly gc: Storage;
+  private readonly axios: AxiosInstance;
 
   constructor() {
-    this.apiUrl = envConfig.API_URL;
-    this.googleBuckenName = envConfig.GOOGLE_BUCKET_NAME;
     this.googleAccountFile = path.join(__dirname, `../google-storage-config/${envConfig.GOOGLE_PROJECT_ACCOUNT_FILE}`);
-    this.googleProjectId = envConfig.GOOGLE_GOOGLE_PROJECT_ID;
 
     this.gc = new Storage({
       keyFilename: this.googleAccountFile,
-      projectId: this.googleProjectId,
+      projectId: envConfig.GOOGLE_GOOGLE_PROJECT_ID,
+    }).bucket(envConfig.GOOGLE_BUCKET_NAME);
+
+    this.axios = axios.create({
+      baseURL: envConfig.API_URL,
     });
   }
 
   async loginBot(): Promise<string> {
-    const { data } = await axios.post(
-      `${this.apiUrl}/login`,
+    const { data } = await this.axios.post(
+      '/login',
       {
         username: envConfig.JWT_USERNAME,
         password: envConfig.JWT_PASSWORD,
@@ -41,7 +40,7 @@ export class ApiService {
   }
 
   async sendCase(createdCase: WizardStateDataInterface, token: string): Promise<string> {
-    const { data } = await axios.post(`${this.apiUrl}/cases`, createdCase,
+    const { data } = await this.axios.post('/cases', createdCase,
       {
         headers: {
           authorization: `Bearer ${token}`,
@@ -56,10 +55,6 @@ export class ApiService {
       responseType: 'arraybuffer',
     });
 
-    await this.gc.bucket(this.googleBuckenName).file(fileName).save(data);
+    await this.gc.file(fileName).save(data);
   }
 }
-
-module.exports = {
-  ApiService,
-};

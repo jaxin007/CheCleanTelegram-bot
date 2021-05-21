@@ -1,3 +1,5 @@
+import 'reflect-metadata';
+
 import { Telegraf } from 'telegraf';
 
 import {

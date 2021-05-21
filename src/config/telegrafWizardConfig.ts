@@ -1,14 +1,19 @@
-import { Scenes } from 'telegraf';
+import { Composer, Scenes } from 'telegraf';
 
-import { telegrafHandler } from '../services';
+import { TYPES } from '../constants';
+import { container } from './inversifyConfig';
+import { TelegrafComposer } from '../types';
+import { TelegrafServiceInterface } from '../interfaces';
 
-const scenes = [
-  telegrafHandler.botInitHandler(),
-  telegrafHandler.createCaseHandler(),
-  telegrafHandler.textHandler(),
-  telegrafHandler.photoHandler(),
-  telegrafHandler.locationHandler(),
-  telegrafHandler.validateCaseHandler(),
+const telegrafService = container.get<TelegrafServiceInterface>(TYPES.TelegrafService);
+
+const scenes: Composer<TelegrafComposer>[] = [
+  telegrafService.botInitHandler(),
+  telegrafService.createCaseHandler(),
+  telegrafService.textHandler(),
+  telegrafService.photoHandler(),
+  telegrafService.locationHandler(),
+  telegrafService.validateCaseHandler(),
 ];
 
 export const superWizard = new Scenes.WizardScene<any>(
