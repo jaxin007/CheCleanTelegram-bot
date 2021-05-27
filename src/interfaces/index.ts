@@ -4,3 +4,4 @@ export * from './wizardStateInterface';
 export * from './apiServiceInterface';
 export * from './telegrafServiceInterface';
 export * from './telegrafHelperInterface';
+export * from './geocoderServiceInterface';

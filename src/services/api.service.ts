@@ -28,15 +28,15 @@ export class ApiService implements ApiServiceInterface {
   }
 
   async loginBot(): Promise<string> {
-    const { data } = await this.axios.post(
-      '/login',
+    const response = await this.axios.post<{token: string}>(
+      '/auth/login',
       {
-        username: envConfig.JWT_USERNAME,
-        password: envConfig.JWT_PASSWORD,
+        login: envConfig.BOT_LOGIN,
+        password: envConfig.BOT_PASSWORD,
       },
     );
 
-    return data.token;
+    return response.data.token;
   }
 
   async sendCase(createdCase: WizardStateDataInterface, token: string): Promise<string> {

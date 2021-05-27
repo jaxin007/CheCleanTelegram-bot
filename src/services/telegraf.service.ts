@@ -58,7 +58,7 @@ export class TelegrafService implements TelegrafServiceInterface {
   locationHandler(): Composer<TelegrafComposer> {
     const locationComposer = this.createComposer();
 
-    locationComposer.on('location', TelegrafHelper.locationComposerOnLocation);
+    locationComposer.on('location', (ctx) => this.telegrafHelper.locationComposerOnLocation(ctx));
 
     locationComposer.use((ctx) => ctx.reply(botTexts.forceLocationRequestText));
 

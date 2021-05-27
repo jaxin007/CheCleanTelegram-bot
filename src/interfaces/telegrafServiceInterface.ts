@@ -6,7 +6,7 @@ export interface TelegrafServiceInterface {
 
   createCaseHandler(): Composer<TelegrafComposer>;
 
-  locationHandler(): Composer<TelegrafComposer> ;
+  locationHandler(): Composer<TelegrafComposer>;
 
   photoHandler(): Composer<TelegrafComposer>;
 

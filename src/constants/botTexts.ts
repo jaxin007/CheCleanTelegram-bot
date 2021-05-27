@@ -13,6 +13,7 @@ export const botTexts = {
   locationRequestText: 'Майже готово! Тепер передай мені свою локацію.',
   locationRequestButtonText: 'Передати локацію',
   forceLocationRequestText: 'Будь-ласка, пришли мені свою локацію.',
+  readyCasePreparation: 'Збираємо всі ваші дані до купи :)',
   caseVerificationText: 'Підтвердіть коректність свого запиту',
   caseApproveButtonText: 'Підтвердити',
   caseDeclineButtonText: 'Відхилити',
@@ -22,4 +23,5 @@ export const botTexts = {
   caseErrorText: 'Щось пішло не так :)',
   recreateCaseText: 'Щоб створити нове звернення, натисни на кнопку.',
   startWorkText: 'Почати роботу.',
+  invalidLocationText: 'Щоб додати адрес, відправте валідну локацію.',
 };
