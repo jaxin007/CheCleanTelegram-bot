@@ -1,0 +1,82 @@
+{
+  "env": {
+    "es6": true,
+    "node": true
+  },
+  "extends": [
+    "airbnb-base",
+    "eslint:recommended",
+    "plugin:@typescript-eslint/eslint-recommended",
+    "plugin:@typescript-eslint/recommended"
+  ],
+  "globals": {
+    "Atomics": "readonly",
+    "SharedArrayBuffer": "readonly"
+  },
+  "parser": "@typescript-eslint/parser",
+  "plugins": [
+    "typescript-sort-keys",
+    "sort-keys-fix",
+    "@typescript-eslint"
+  ],
+  "rules": {
+    "indent": ["error", 2],
+    "no-unused-vars": "off",
+    "linebreak-style": ["error", "unix"],
+    "camelcase": "off",
+    "import/no-unresolved": "off",
+    "import/extensions": "off",
+    "import/prefer-default-export": "off",
+    "no-console": "warn",
+    "max-len": ["error", {
+      "code": 250
+    }],
+    "no-underscore-dangle": "off",
+    "object-curly-newline": ["error", {
+      "ObjectExpression": "always",
+      "ObjectPattern": {
+        "multiline": true
+      },
+      "ImportDeclaration": {
+        "multiline": false,
+        "minProperties": 3
+      },
+      "ExportDeclaration": {
+        "multiline": true,
+        "minProperties": 3
+      }
+    }],
+    "object-property-newline": ["error", {
+      "allowAllPropertiesOnSameLine": false
+    }],
+    "no-shadow": "off",
+    "no-param-reassign": "off",
+    "sort-keys-fix/sort-keys-fix": "off",
+    "typescript-sort-keys/interface": "error",
+    "typescript-sort-keys/string-enum": "error",
+    "@typescript-eslint/semi": ["error"],
+    "@typescript-eslint/no-inferrable-types": "off",
+    "@typescript-eslint/no-shadow": ["error"],
+    "@typescript-eslint/no-empty-interface": "off",
+    "@typescript-eslint/no-unused-vars": "error",
+    "no-await-in-loop": "off",
+    "no-plusplus": "off",
+    "no-constant-condition": ["error", {
+      "checkLoops": false
+    }],
+    "no-case-declarations": "warn",
+    "no-continue": "off"
+  },
+  "settings": {
+    "import/resolver": {
+      "node": {
+        "extensions": [
+          ".js",
+          ".jsx",
+          ".ts",
+          ".tsx"
+        ]
+      }
+    }
+  }
+}

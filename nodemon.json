@@ -1,0 +1,6 @@
+{
+  "watch": ["./src", ".env"],
+  "ext": "ts, json, yml",
+  "exec": "ts-node -r dotenv/config ./src/app.ts",
+  "legacyWatch": true
+}
