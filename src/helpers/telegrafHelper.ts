@@ -151,6 +151,11 @@ export class TelegrafHelper implements TelegrafHelperInterface {
 
       return ctx.scene.leave();
     } catch (err) {
+      console.error({
+        errMessage: err.response?.data || err.message,
+        errStack: err.stack,
+      });
+
       return ctx.reply(botTexts.caseErrorText);
     }
   }

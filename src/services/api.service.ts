@@ -1,9 +1,10 @@
 import path from 'path';
 import axios, { AxiosInstance } from 'axios';
-import { Bucket, Storage } from '@google-cloud/storage';
 import { injectable } from 'inversify';
+import { Bucket, Storage } from '@google-cloud/storage';
 
 import { envConfig } from '../config';
+import { compressImage } from '../helpers';
 import { ApiServiceInterface, WizardStateDataInterface } from '../interfaces';
 
 @injectable()
@@ -55,6 +56,8 @@ export class ApiService implements ApiServiceInterface {
       responseType: 'arraybuffer',
     });
 
-    await this.gc.file(fileName).save(data);
+    const compressedImage = await compressImage(data);
+
+    await this.gc.file(fileName).save(compressedImage);
   }
 }
