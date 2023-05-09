@@ -16,7 +16,7 @@
   },
   "dependencies": {
     "@google-cloud/storage": "^5.8.5",
-    "axios": "^0.21.1",
+    "axios": "^0.21.2",
     "dotenv": "^8.2.0",
     "inversify": "^5.1.1",
     "node-geocoder": "^3.27.0",
